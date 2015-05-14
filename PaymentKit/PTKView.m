@@ -74,6 +74,10 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     [self setup];
 }
 
+- (CGSize)intrinsicContentSize {
+    return CGSizeMake(290, 46);
+}
+
 - (void)setup
 {
     _isInitialState = YES;
