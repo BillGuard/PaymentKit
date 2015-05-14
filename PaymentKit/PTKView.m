@@ -48,11 +48,11 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
 - (BOOL)cardExpiryShouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)replacementString;
 - (BOOL)cardCVCShouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)replacementString;
 
-@property (nonatomic) UIView *opaqueOverGradientView;
 @property (nonatomic) PTKCardNumber *cardNumber;
 @property (nonatomic) PTKCardExpiry *cardExpiry;
 @property (nonatomic) PTKCardCVC *cardCVC;
 @property (nonatomic) PTKAddressZip *addressZip;
+@property(nonatomic, strong) CAGradientLayer *gradientLayer;
 @end
 
 #pragma mark -
@@ -82,11 +82,6 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, 290, 46);
     self.backgroundColor = [UIColor clearColor];
 
-    UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:self.bounds];
-    backgroundImageView.image = [[UIImage imageNamed:@"textfield"]
-            resizableImageWithCapInsets:UIEdgeInsetsMake(0, 8, 0, 8)];
-    [self addSubview:backgroundImageView];
-
     self.innerView = [[UIView alloc] initWithFrame:CGRectMake(40, 12, self.frame.size.width - 40, 20)];
     self.innerView.clipsToBounds = YES;
 
@@ -97,15 +92,12 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
 
     [self.innerView addSubview:self.cardNumberField];
 
-    UIImageView *gradientImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 12, 34)];
-    gradientImageView.image = [UIImage imageNamed:@"gradient"];
-    [self.innerView addSubview:gradientImageView];
-
-    self.opaqueOverGradientView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 9, 34)];
-    self.opaqueOverGradientView.backgroundColor = [UIColor colorWithRed:0.9686 green:0.9686
-                                                                   blue:0.9686 alpha:1.0000];
-    self.opaqueOverGradientView.alpha = 0.0;
-    [self.innerView addSubview:self.opaqueOverGradientView];
+    self.gradientLayer = [CAGradientLayer layer];
+    self.gradientLayer.frame = self.cardNumberField.bounds;
+    self.gradientLayer.colors = @[(id) [UIColor whiteColor].CGColor, (id) [UIColor clearColor].CGColor];
+    self.gradientLayer.startPoint = CGPointMake(0.0f, 0.5f);
+    self.gradientLayer.endPoint = CGPointMake(-20.0f, 0.5f);
+    self.cardNumberField.layer.mask = self.gradientLayer;
 
     [self addSubview:self.innerView];
     [self addSubview:self.placeholderView];
@@ -218,11 +210,12 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
 {
     _isInitialState = YES;
 
-    [UIView animateWithDuration:0.05 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
-                     animations:^{
-                         self.opaqueOverGradientView.alpha = 0.0;
-                     } completion:^(BOOL finished) {
-     }];
+    [CATransaction begin];
+    [CATransaction setAnimationDuration:0.4];
+    self.gradientLayer.startPoint = CGPointMake(0.0f, 0.5f);
+    self.gradientLayer.endPoint = CGPointMake(-10.0f, 0.5f);
+    [CATransaction commit];
+
     [UIView animateWithDuration:0.400
                           delay:0
                         options:(UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction)
@@ -272,11 +265,12 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
 
     CGFloat frameX = self.cardNumberField.frame.origin.x - (cardNumberSize.width - lastGroupSize.width);
 
-    [UIView animateWithDuration:0.05 delay:0.35 options:UIViewAnimationOptionCurveEaseInOut
-                     animations:^{
-                         self.opaqueOverGradientView.alpha = 1.0;
-                     } completion:^(BOOL finished) {
-    }];
+    [CATransaction begin];
+    [CATransaction setAnimationDuration:0.4];
+    self.gradientLayer.startPoint = CGPointMake(0.76f, 0.5f);
+    self.gradientLayer.endPoint = CGPointMake(0.72f, 0.5f);
+    [CATransaction commit];
+
     [UIView animateWithDuration:0.400 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         self.cardExpiryField.frame = CGRectMake(kPTKViewCardExpiryFieldEndX,
                 self.cardExpiryField.frame.origin.y,

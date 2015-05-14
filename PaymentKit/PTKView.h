@@ -25,7 +25,6 @@
 
 - (BOOL)isValid;
 
-@property (nonatomic, readonly) UIView *opaqueOverGradientView;
 @property (nonatomic, readonly) PTKCardNumber *cardNumber;
 @property (nonatomic, readonly) PTKCardExpiry *cardExpiry;
 @property (nonatomic, readonly) PTKCardCVC *cardCVC;
