@@ -19,6 +19,11 @@
 #define kPTKViewCardExpiryFieldEndX 84
 #define kPTKViewCardCVCFieldEndX 177
 
+#define GRADIENT_START_POINT_VISIBLE CGPointMake(0.76f, 0.5f)
+#define GRADIENT_END_POINT_VISIBLE CGPointMake(0.72f, 0.5f)
+#define GRADIENT_START_POINT_INITIAL CGPointMake(0.0f, 0.5f)
+#define GRADIENT_END_POINT_INITIAL CGPointMake(-1.0f, 0.5f)
+
 static NSString *const kPTKLocalizedStringsTableName = @"PaymentKit";
 static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable";
 
@@ -99,8 +104,8 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     self.gradientLayer = [CAGradientLayer layer];
     self.gradientLayer.frame = self.cardNumberField.bounds;
     self.gradientLayer.colors = @[(id) [UIColor whiteColor].CGColor, (id) [UIColor clearColor].CGColor];
-    self.gradientLayer.startPoint = CGPointMake(0.0f, 0.5f);
-    self.gradientLayer.endPoint = CGPointMake(-20.0f, 0.5f);
+    self.gradientLayer.startPoint = GRADIENT_START_POINT_INITIAL;
+    self.gradientLayer.endPoint = GRADIENT_END_POINT_INITIAL;
     self.cardNumberField.layer.mask = self.gradientLayer;
 
     [self addSubview:self.innerView];
@@ -215,9 +220,9 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     _isInitialState = YES;
 
     [CATransaction begin];
-    [CATransaction setAnimationDuration:0.4];
-    self.gradientLayer.startPoint = CGPointMake(0.0f, 0.5f);
-    self.gradientLayer.endPoint = CGPointMake(-10.0f, 0.5f);
+    [CATransaction setAnimationDuration:1.2];
+    self.gradientLayer.startPoint = GRADIENT_START_POINT_INITIAL;
+    self.gradientLayer.endPoint = GRADIENT_END_POINT_INITIAL;
     [CATransaction commit];
 
     [UIView animateWithDuration:0.400
@@ -271,8 +276,8 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
 
     [CATransaction begin];
     [CATransaction setAnimationDuration:0.4];
-    self.gradientLayer.startPoint = CGPointMake(0.76f, 0.5f);
-    self.gradientLayer.endPoint = CGPointMake(0.72f, 0.5f);
+    self.gradientLayer.startPoint = GRADIENT_START_POINT_VISIBLE;
+    self.gradientLayer.endPoint = GRADIENT_END_POINT_VISIBLE;
     [CATransaction commit];
 
     [UIView animateWithDuration:0.400 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
